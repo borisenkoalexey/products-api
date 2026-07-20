@@ -1,8 +1,9 @@
 from fastapi import FastAPI
+from typing import Any
 
 app = FastAPI()
 
-PRODUCTS = [
+PRODUCTS: list[dict[str, Any]] = [
     {
         "id": 1,
         "name": "Ноутбук",
