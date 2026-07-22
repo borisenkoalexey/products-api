@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from typing import Any
 
 app = FastAPI()
@@ -57,3 +57,14 @@ async def healthcheck():
 @app.get("/products")
 async def read_all_products():
     return PRODUCTS
+
+
+@app.get("/products/{product_id}")
+async def read_product(product_id: int) -> dict[str, Any]:
+    for product in PRODUCTS:
+        if product.get("id") == product_id:
+            return product
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND, detail="Продукт не найден"
+    )
