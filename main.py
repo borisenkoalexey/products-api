@@ -59,6 +59,20 @@ async def read_all_products():
     return PRODUCTS
 
 
+@app.get("/products/search")
+async def search_products(q: str):
+    products_to_return: list[dict[str, Any]] = []
+
+    needle = q.casefold()
+    for product in PRODUCTS:
+        name: str = product.get("name", "")
+        description: str = product.get("description", "")
+        if needle in name.casefold() or needle in description.casefold():
+            products_to_return.append(product)
+
+    return products_to_return
+
+
 @app.get("/products/{product_id}")
 async def read_product(product_id: int) -> dict[str, Any]:
     for product in PRODUCTS:
