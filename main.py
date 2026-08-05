@@ -91,7 +91,7 @@ async def read_products_by_price(min_price: float, max_price: float):
     products_to_return: list[dict[str, Any]] = []
 
     for product in PRODUCTS:
-        product_price: float = product.get("price", "")
+        product_price: float = product.get("price", 0.0)
         if min_price <= product_price <= max_price:
             products_to_return.append(product)
 
