@@ -73,6 +73,19 @@ async def search_products(q: str):
     return products_to_return
 
 
+@app.get("/products/by-category")
+async def read_products_by_category(category: str):
+    products_to_return: list[dict[str, Any]] = []
+
+    target = category.casefold()
+    for product in PRODUCTS:
+        product_category: str = product.get("category", "")
+        if product_category.casefold() == target:
+            products_to_return.append(product)
+
+    return products_to_return
+
+
 @app.get("/products/{product_id}")
 async def read_product(product_id: int) -> dict[str, Any]:
     for product in PRODUCTS:
