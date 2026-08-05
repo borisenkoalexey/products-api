@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
-from typing import Any
+from typing import Any, Optional
 
 app = FastAPI()
 
@@ -87,12 +87,16 @@ async def read_products_by_category(category: str):
 
 
 @app.get("/products/by-price")
-async def read_products_by_price(min_price: float, max_price: float):
+async def read_products_by_price(
+    min_price: Optional[float] = None, max_price: Optional[float] = None
+):
     products_to_return: list[dict[str, Any]] = []
+    lower_bound = min_price if min_price is not None else 0.0
+    upper_bound = max_price if max_price is not None else float("inf")
 
     for product in PRODUCTS:
         product_price: float = product.get("price", 0.0)
-        if min_price <= product_price <= max_price:
+        if lower_bound <= product_price <= upper_bound:
             products_to_return.append(product)
 
     return products_to_return
