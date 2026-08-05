@@ -86,6 +86,18 @@ async def read_products_by_category(category: str):
     return products_to_return
 
 
+@app.get("/products/by-price")
+async def read_products_by_price(min_price: float, max_price: float):
+    products_to_return: list[dict[str, Any]] = []
+
+    for product in PRODUCTS:
+        product_price: float = product.get("price", "")
+        if min_price <= product_price <= max_price:
+            products_to_return.append(product)
+
+    return products_to_return
+
+
 @app.get("/products/{product_id}")
 async def read_product(product_id: int) -> dict[str, Any]:
     for product in PRODUCTS:
